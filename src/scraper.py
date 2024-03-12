@@ -76,10 +76,10 @@ async def get_element_content(page: Page, element: ElementHandle) -> dict[str, A
     n_reviews = await element.query_selector("span.RDApEe.YrbPuc")
     price_range = await element.query_selector("div:nth-child(2) > span:nth-child(2)")
     description = await page.query_selector("c-wiz[jsrenderer='Gdjwac']")
-    facilities = await page.query_selector("div.fgzP8e")
+    extra_features = await page.query_selector("div.fgzP8e")
     street = await page.query_selector("div.F2yIXb")
     phone_number = await page.query_selector("div.eigqqc")
-    featured_reviews = await page.query_selector_all("span.Vz1Vkc")
+    reviews = await page.query_selector_all("span.Vz1Vkc")
     extra_content = await page.query_selector_all(
         "div.cg9Tke-KZWGte-ezkdbf-BXzADf."
         "cg9Tke-KZWGte-ezkdbf-pTTvpb-lvvS4b."
@@ -94,11 +94,11 @@ async def get_element_content(page: Page, element: ElementHandle) -> dict[str, A
         "n_reviews": await get_normalize_content(n_reviews),
         "stars_avg": await stars_avg.inner_text(),
         "price_range": await get_normalize_content(price_range),
-        "facilities": await get_normalize_content(facilities),
+        "extra_features": await get_normalize_content(extra_features),
         "street": await street.inner_text() if street else "",
         "opening_hours": get_hours_to_dict(opening_hours),
         "phone_number": await get_normalize_content(phone_number),
-        "featured_reviews": [await review.inner_text() for review in featured_reviews],
+        "reviews": [await review.inner_text() for review in reviews],
         "extra_content": [await get_normalize_content(cont) for cont in extra_content],
     }
 
