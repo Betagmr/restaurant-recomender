@@ -3,9 +3,8 @@ from pathlib import Path
 import pandas as pd
 
 
-def load_all_restaurants():
-    data_path = Path() / "data" / "raw"
-    all_data_paths = list(data_path.glob("*.csv"))
+def load_all_restaurants(data_path):
+    all_data_paths = list(Path(data_path).glob("*.csv"))
 
     df = pd.DataFrame()
     for street_path in all_data_paths:
