@@ -1,5 +1,3 @@
-from time import time
-
 from lightning import LightningModule
 from torch import nn
 from torch.optim import Adam
