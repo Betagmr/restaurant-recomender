@@ -1,3 +1,7 @@
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
 [tool.poetry]
 name = "restaurant-recomender"
 version = "0.1.0"
@@ -19,6 +23,18 @@ chromadb = "^0.4.24"
 [tool.poetry.group.dev.dependencies]
 ipykernel = "^6.29.3"
 
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+select = [
+    "N",    # pep8-naming
+    "E",    # pycodestyle errors
+    "F",    # pyflakes
+    "I",    # isort
+    "C",    # flake8-comprehensions
+    "B",    # flake8-bugbear
+    "UP",   # pyupgrade
+    "PD",   # pandas vet
+    "NPY",  # NumPy-specific rules
+]
