@@ -1,5 +1,5 @@
 MERGE_ASCENDING = lambda x, y: x <= y  # noqa: E731
-MERGE_DESCENDING = lambda x, y: x <= y  # noqa: E731
+MERGE_DESCENDING = lambda x, y: x >= y  # noqa: E731
 
 
 def merge_sort(array, method=MERGE_ASCENDING):
