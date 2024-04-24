@@ -56,12 +56,20 @@ class RankNet(LightningModule):
         self.progress_bar.update(1)
 
     def training_step(self, batch, batch_idx):
+        metrics = self.common_step(batch, batch_idx)
+        self.log_dict({"train_loss": metrics["loss"]})
+
+        return metrics["loss"]
+
+    def validation_step(self, batch, batch_idx):
+        metrics = self.common_step(batch, batch_idx)
+        self.log_dict({"val_loss": metrics["loss"]})
+
+        return metrics["loss"]
+
+    def common_step(self, batch, batch_idx):
         input_1, input_2, target = batch
         output = self.forward(input_1, input_2)
         loss = self.loss(output, target)
 
-        self.log_dict(
-            {"train_loss": loss},
-        )
-
-        return loss
+        return {"loss": loss}
