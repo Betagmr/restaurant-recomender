@@ -10,7 +10,6 @@ class RankerOrchestrator:
         self.model = model
         self.query_emb = query_emb
         self.sorting = merge_sort
-
         self.list_restaurants = self._calculate_score(results)
 
     def _calculate_score(self, results):
@@ -26,13 +25,16 @@ class RankerOrchestrator:
 
             list_restaurants.append(
                 Restaurant(
-                    name=index,
-                    score=self.model(restaurant_tensor),
+                    name=metadatas[index]["name"],
+                    score=self.model.predict(restaurant_tensor),
                     content=documents[index],
                 )
             )
 
         return list_restaurants
+
+    def rank_restaurants(self):
+        return self.sorting(self.list_restaurants, lambda x, y: x.score > y.score)
 
 
 @dataclass
