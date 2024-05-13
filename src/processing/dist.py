@@ -1,9 +1,33 @@
 import math
+import re
 
 from geopy.geocoders import Nominatim
 
 
-def calculate_distance(lat1, lon1, lat2, lon2):
+def add_direction_location(df_raw):
+    new_df = df_raw.copy()
+    new_df["direction"] = None
+    dict_locations = _get_code_location_dict()
+
+    for index, row in new_df.iterrows():
+        direction = row["street"]
+        if not isinstance(direction, str):
+            continue
+
+        is_zip_code = re.search(r"\b\d{5}\b", direction)
+        if not is_zip_code:
+            continue
+
+        zip_code = is_zip_code.group(0)
+        if zip_code not in dict_locations:
+            continue
+
+        new_df.loc[index, "direction"] = dict_locations[zip_code]
+
+    return new_df
+
+
+def _calculate_distance(lat1, lon1, lat2, lon2):
     # Fórmula de Haversine
     d_lon = lon2 - lon1
     d_lat = lat2 - lat1
@@ -14,11 +38,11 @@ def calculate_distance(lat1, lon1, lat2, lon2):
     return c * r
 
 
-def calculate_bearing(lat1, lon1, lat2, lon2):
+def _calculate_bearing(lat1, lon1, lat2, lon2):
     # Convertir grados a radianes
     lat1, lon1, lat2, lon2 = map(math.radians, [lat1, lon1, lat2, lon2])
 
-    if calculate_distance(lat1, lon1, lat2, lon2) <= 0.5:
+    if _calculate_distance(lat1, lon1, lat2, lon2) <= 0.5:
         return "Centro"
 
     d_lon = lon2 - lon1
@@ -35,19 +59,19 @@ def calculate_bearing(lat1, lon1, lat2, lon2):
     return directions[index % len(directions)]
 
 
-def get_code_location_dict():
+def _get_code_location_dict():
     geolocation = Nominatim(user_agent="nlp")
-    list_postal_codes = [str(48000 + x) for x in range(1, 16)]
+    list_zip_codes = [str(48000 + x) for x in range(1, 16)]
     center_lat, center_lon = 43.263386002871265, -2.9371692887362872
 
     dict_cord_code = {}
-    for code in list_postal_codes:
+    for code in list_zip_codes:
         location = geolocation.geocode(f"{code}, España")
 
         if not location:
             raise ValueError(f"The postal code {code} can not be found")
 
-        dict_cord_code[code] = calculate_bearing(
+        dict_cord_code[code] = _calculate_bearing(
             center_lat,
             center_lon,
             location.latitude,
