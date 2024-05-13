@@ -20,6 +20,7 @@ nltk = "^3.8.1"
 chromadb = "^0.4.24"
 matplotlib = "^3.8.4"
 pandasql = "^0.7.3"
+geopy = "^2.4.1"
 
 
 [tool.poetry.group.dev.dependencies]
