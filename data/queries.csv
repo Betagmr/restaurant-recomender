@@ -1,0 +1,3 @@
+search_query,sql_query
+"Este es solo un ejemplo","ORDER BY age ASC, salary DESC"
+"Este es otro ejemplo","ORDER BY age DESC, salary DESC"
