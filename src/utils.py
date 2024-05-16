@@ -23,7 +23,7 @@ def load_parsed_queries(data_path, df_data: pd.DataFrame):
     df_queries = pd.read_csv(data_path)
     query_dict = {}
     for _, row in df_queries.iterrows():
-        query = f"SELECT * FROM df_data {row['sql_query']}"
+        query = f"SELECT * FROM df_data {row['sql_query']}, muchas_resenas DESC, medio_resenas DESC, pocas_resenas DESC"
         entry = row["search_query"]
         query_dict[entry] = sqldf(query, locals())
 
