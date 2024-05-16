@@ -11,5 +11,6 @@ def transform_to_vector_df(df):
     data = add_extra_features(data)
     data = add_price_range(data)
     data = add_class_reviews(data)
+    data.columns = data.columns.str.replace(' ', '_').str.replace('-', '')
 
     return data.drop(columns=data.columns[1:11])
