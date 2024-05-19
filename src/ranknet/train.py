@@ -5,13 +5,11 @@ from torch.utils.data import DataLoader
 
 from src.ranknet.dataset import RankDataset
 from src.ranknet.model import RankNet
+from src.ranknet.train_data import get_train_data
 
 
-def train_model():
+def train_model(n_features, data1, data2, target):
     # Generate sample data
-    n_samples = 50000
-    n_features = 450
-    data1, data2, target = get_sample_data(n_samples, n_features)
 
     # Configure training loop
     model = RankNet(n_features)
@@ -44,4 +42,14 @@ def get_sample_data(n_samples, n_features):
 
 
 if __name__ == "__main__":
-    train_model()
+    n_samples = 50000
+    n_features = 430
+    data1, data2, target = get_train_data()
+    print(data1.shape)
+
+    train_model(
+        n_features=n_features,
+        data1=data1,
+        data2=data2,
+        target=target,
+    )

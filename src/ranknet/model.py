@@ -10,13 +10,13 @@ class RankNet(LightningModule):
 
         # Model architecture
         self.model = nn.Sequential(
-            nn.Linear(n_features, 512),
+            nn.Linear(n_features, 1000),
             nn.Dropout(0.5),
             nn.LeakyReLU(0.2, inplace=True),
-            nn.Linear(512, 256),
+            nn.Linear(1000, 500),
             nn.Dropout(0.5),
             nn.LeakyReLU(0.2, inplace=True),
-            nn.Linear(256, 1),
+            nn.Linear(500, 1),
         )
         self.output_sig = nn.Sigmoid()
         self.loss = loss()

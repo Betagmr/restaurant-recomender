@@ -2,6 +2,7 @@ from pathlib import Path
 
 import pandas as pd
 from pandasql import sqldf
+from tqdm import tqdm
 
 
 def load_all_restaurants(data_path):
@@ -22,7 +23,7 @@ def load_parsed_queries(data_path, df_data: pd.DataFrame):
 
     df_queries = pd.read_csv(data_path)
     query_dict = {}
-    for _, row in df_queries.iterrows():
+    for _, row in tqdm(df_queries.iterrows(), total=df_queries.shape[0]):
         query = f"SELECT * FROM df_data {row['sql_query']}, muchas_resenas DESC, medio_resenas DESC, pocas_resenas DESC"
         entry = row["search_query"]
         query_dict[entry] = sqldf(query, locals())
