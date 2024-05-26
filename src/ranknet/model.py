@@ -1,3 +1,4 @@
+import torch
 from lightning import LightningModule
 from torch import nn
 from torch.optim import Adam
@@ -16,7 +17,10 @@ class RankNet(LightningModule):
             nn.Linear(1000, 500),
             nn.Dropout(0.5),
             nn.LeakyReLU(0.2, inplace=True),
-            nn.Linear(500, 1),
+            nn.Linear(500, 250),
+            nn.Dropout(0.5),
+            nn.LeakyReLU(0.2, inplace=True),
+            nn.Linear(250, 1),
         )
         self.output_sig = nn.Sigmoid()
         self.loss = loss()
@@ -36,6 +40,7 @@ class RankNet(LightningModule):
 
         return self.output_sig(s1 - s2)
 
+    @torch.jit.export
     def predict(self, input):
         return self.model(input)
 

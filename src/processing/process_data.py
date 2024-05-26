@@ -13,6 +13,8 @@ def get_processed_data(df_restaurants: pd.DataFrame):
         + df_restaurants["extra_content"].astype(str)
         + " "
         + df_restaurants["reviews"].astype(str)
+        + " "
+        + df_restaurants["street"].astype(str)
     )
 
     corpus = df_restaurants["info"].astype(str).tolist()
@@ -22,6 +24,8 @@ def get_processed_data(df_restaurants: pd.DataFrame):
         {
             "bar_name": df_restaurants["title"],
             "search_corpus": processed_corpus,
+            "street": df_restaurants["street"],
+            "extra": df_restaurants["extra_features"],
         }
     )
 

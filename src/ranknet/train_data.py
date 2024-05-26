@@ -1,4 +1,5 @@
 import numpy as np
+from tqdm import tqdm
 
 import chromadb
 from src.processing.vectorize import transform_to_vector_df
@@ -15,9 +16,10 @@ def get_train_data():
     collection = db.get_collection(name="my_collection")
 
     count = 0
+    total = 400
     data_1 = []
     data_2 = []
-    for key, content in result.items():
+    for key, content in tqdm(result.items(), total=total):
         emb = collection._embed(key)[0]
         list_topic = []
 
@@ -29,7 +31,7 @@ def get_train_data():
         data_2.extend(list_topic[:-1])
 
         count += 1
-        if count == 50:
+        if count == total:
             break
 
     target = np.array([[1] for _ in range(len(data_1))])
