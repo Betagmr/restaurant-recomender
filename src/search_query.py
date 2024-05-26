@@ -1,6 +1,9 @@
 import sys
 
+import torch
+
 import chromadb
+from src.ranknet.orchestrator import RankerOrchestrator
 
 
 def search_query(query_text: str, n_results: int = 5):
@@ -14,9 +17,17 @@ def search_query(query_text: str, n_results: int = 5):
         include=["embeddings", "documents", "metadatas"],
     )
 
-    for doc, metadata in zip(result["documents"][0], result["metadatas"][0]):
-        print(f"Bar name: {metadata['name']}")
-        print(doc)
+    orchestrator = RankerOrchestrator(
+        torch.jit.load("model.pt"),
+        query_emb,
+        result,
+    )
+
+    for restaurant in orchestrator.rank_restaurants():
+        print(f"Bar name: {restaurant.name}")
+        print(f"street: {restaurant.street}")
+        print(f"extra: {restaurant.extra}")
+        print(restaurant.content)
         print("----------------------")
 
 
